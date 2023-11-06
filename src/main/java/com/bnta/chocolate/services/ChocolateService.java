@@ -1,8 +1,12 @@
 package com.bnta.chocolate.services;
 
+import com.bnta.chocolate.dto.ChocolateRequest;
 import com.bnta.chocolate.models.Chocolate;
 import com.bnta.chocolate.models.Estate;
 import com.bnta.chocolate.repositories.ChocolateRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +19,27 @@ public class ChocolateService {
     @Autowired
     EstateService estateService;
 
-
-    public Chocolate createNewChocolate(long id, String name, int cocoaPercentage){
-
-        Estate estate= estateService.getEstateById(id).get();
-        Chocolate chocolate = new Chocolate(name, cocoaPercentage, estate);
+    public Chocolate createNewChocolate(long id, ChocolateRequest chocolateRequest) {
+        String newName = chocolateRequest.getName();
+        int newCocoaPercentage = chocolateRequest.getCocoaPercentage();
+        Estate estate = estateService.getEstateById(id).get();
+        Chocolate chocolate = new Chocolate(newName, newCocoaPercentage, estate);
         chocolateRepository.save(chocolate);
-        return chocolate;
-    }
+        return chocolate;}
+
+
+
+
+
 
 
     public Chocolate getChocolateById(long id) {
-        return chocolateRepository.findById(id);
+        return chocolateRepository.findById(id).get();
     }
+
+//    public Chocolate createNewChocolate(Chocolate chocolate) {
+//        chocolateRepository.save(chocolate);
+//        return chocolate;
+//
+//    }
 }

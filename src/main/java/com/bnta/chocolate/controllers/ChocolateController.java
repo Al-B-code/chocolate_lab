@@ -1,8 +1,10 @@
 package com.bnta.chocolate.controllers;
 
+import com.bnta.chocolate.dto.ChocolateRequest;
 import com.bnta.chocolate.models.Chocolate;
 import com.bnta.chocolate.models.Estate;
 import com.bnta.chocolate.services.ChocolateService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +19,20 @@ public class ChocolateController {
 
 
 
-    @PostMapping
-
+    @PostMapping(value = "/{id}")
     public ResponseEntity<Chocolate> addNewChocolate(
-            @RequestParam long id,
-            @RequestBody String name,
-            @RequestBody int cocoaPercentage
-            ) {
-     Chocolate chocolate = chocolateService.createNewChocolate(id, name, cocoaPercentage);
-      return new ResponseEntity<>(chocolate, HttpStatus.CREATED);
+            @PathVariable Long id,
+            @RequestBody ChocolateRequest request)
+            throws JsonProcessingException {
+        Chocolate chocolate = chocolateService.createNewChocolate(id, request);
+        return new ResponseEntity<>(chocolate, HttpStatus.CREATED);
     }
 
 
+
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Chocolate> getChocolateById(@PathVariable long id){
+    public ResponseEntity<Chocolate> getChocolateById(@PathVariable Long id){
         Chocolate chocolate = chocolateService.getChocolateById(id);
         return new ResponseEntity<>(chocolate, HttpStatus.OK);
     }
