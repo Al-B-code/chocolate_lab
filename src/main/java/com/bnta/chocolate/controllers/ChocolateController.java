@@ -31,8 +31,6 @@ public class ChocolateController {
     }
 
 
-
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<Chocolate> getChocolateById(@PathVariable Long id){
         Chocolate chocolate = chocolateService.getChocolateById(id);
